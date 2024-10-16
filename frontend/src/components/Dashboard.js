@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import dotenv from 'dotenv';
 const Dashboard = () => {
+    dotenv.config()
+;    const REACT_APP_BACK_URL=process.env.REACT_APP_BACK_URL
     const [bookings, setBookings] = useState([]);
     const [username, setUsername] = useState('');
 

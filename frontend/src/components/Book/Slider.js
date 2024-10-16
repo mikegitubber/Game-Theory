@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import UserContext from "../../Constants/UserContext"; // Import UserContext to get center and sport
-
+import dotenv from 'dotenv'
 const BookingSchedule = ({ bookings, courts, timeslots, handleBooking }) => {
   return (
     <div className="grid grid-cols-7 gap-4 p-4 bg-gray-100">
@@ -43,6 +43,8 @@ const BookingSchedule = ({ bookings, courts, timeslots, handleBooking }) => {
 };
 
 const Slider = ({ selectedDate }) => {
+  dotenv.config()
+;    const REACT_APP_BACK_URL=process.env.REACT_APP_BACK_URL
   const [date, setDate] = useState(selectedDate || new Date()); // Set the initial date
   const [sports, setSports] = useState([]); // Store available sports
   const [courts, setCourts] = useState([]); // Store available courts for the selected sport

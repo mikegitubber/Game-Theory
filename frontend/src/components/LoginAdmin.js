@@ -3,8 +3,10 @@ import './Signupform.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-
+import dotenv from 'dotenv';
 export default function Loginadmin() {
+    dotenv.config()
+;    const REACT_APP_BACK_URL=process.env.REACT_APP_BACK_URL
     let navigate = useNavigate();
     const [Credentials, setCredentials] = useState({ email: "", password: "" });
 
