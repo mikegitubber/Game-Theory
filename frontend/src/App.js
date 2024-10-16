@@ -8,6 +8,8 @@ import Booking from './components/Booking';
 import Sports from './components/Book/Sports';
 import UserContext from './Constants/UserContext';
 import { useContext, useState } from 'react';
+import Loginform from './components/Loginform';
+import Signupform from './components/Signupform';
 const App=()=> {
   const [place,setPlace]=useState();
   const [game,setGame]=useState();
@@ -32,6 +34,14 @@ export const appRouter = createBrowserRouter([
               path: "/Dashboard",
               element : <Dashboard/>
           },
+          {
+            path: "/login",
+            element : <Loginform/>
+        },
+        {
+          path: "/signup",
+          element : <Signupform/>
+        },
           {
             path: "/AboutUS",
             element : <AboutUS/>

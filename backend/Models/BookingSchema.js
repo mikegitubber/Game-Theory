@@ -14,11 +14,15 @@ const BookingSchema =new mongoose.Schema({
         type:String,
         require:true,
     },
-    time:
+    timeSlot:
+    {
+        type: String,
+        require:true ,
+    },
+    Date:
     {
         type: Date,
         require:true
-        
     },
     courtNo:{
         type: Number,

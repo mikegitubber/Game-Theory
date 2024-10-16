@@ -1,25 +1,10 @@
 const {Center} =require("../Models/Centers")
+const {Booking}=require("../Models/BookingSchema")
 const View = async (req, res) => {
 try{
-    console.log(req.query)
-    const {center,sport}=req.query
-    if(sport!=undefined){
-        Center.findOne(
-            { Name: center }
-          )
-            .then(center => {
-              if (center && center.sport && center.sport.length > 0) {
-                const courts = center.sport[0].courts;
-                console.log(`Number of courts: ${courts}`);
-              } else {
-                console.log("Sport not found.");
-              }
-            })
-            .catch(err => {
-              console.error("Error fetching data:", err);
-            });
-    }
-    console.log(req.query)
+
+    const {center}=req.query
+
     if(center!=undefined){
         const data= await Center.find({Name:center});
     return res.json(data);
@@ -33,38 +18,34 @@ catch(err){
     res.status(500).json({ error: "Internal Server Error" });
 }
 };
+const Booked = async (req,res)=>{
+    const { center } = req.query;
+  try {
+    const bookings = await Booking.find({ center }).sort({ time: 1 });
+    return res.status(200).json(bookings);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error fetching bookings" });
+  }
+}
 const Book = async(req,res)=>{
-    try{
-        console.log(req.query)
-        const {center,sport}=req.query
-        if(sport!=undefined){
-            Center.findOne(
-                { Name: center }
-              )
-                .then(center => {
-                  if (center && center.sport && center.sport.length > 0) {
-                    const courts = center.sport[0].courts;
-                    console.log(`Number of courts: ${courts}`);
-                  } else {
-                    console.log("Sport not found.");
-                  }
-                })
-                .catch(err => {
-                  console.error("Error fetching data:", err);
-                });
-        }
-        console.log(req.query)
-        if(center!=undefined){
-            const data= await Center.find({Name:center});
-        return res.json(data);
-        }
-        const data= await Center.find();
-        // console.log(data);
-        res.json(data);
-    }
-    catch(err){
-        console.error("Error in Media function:", err);
-        res.status(500).json({ error: "Internal Server Error" });
+    const { username, center, sport, timeSlot,Date, courtNo, booked } = req.body;
+    try {
+      // Create a new booking document
+      const newBooking = new Booking({
+        username,
+        center,
+        sport,
+        timeSlot,
+        Date,
+        courtNo,
+        booked,
+      });
+  
+      await newBooking.save();
+      res.json({ message: "Booking successful" });
+    } catch (error) {
+      res.status(500).json({ error: "Error booking the slot" });
     }
 }
-module.exports = { View };
+module.exports = { View ,Book,Booked};
