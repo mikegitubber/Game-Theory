@@ -1,61 +1,71 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-const Sidebar =()=>{
-    const [open, setOpen] = useState(true);
-    const Menus = [
-        { title: "AboutUS", src: "https://cdn.iconscout.com/icon/free/png-256/free-calendar-49-83540.png?f=webp" },
-        { title: "Dashboard", src: "https://static.vecteezy.com/system/resources/previews/022/445/029/original/write-icon-notes-illustration-sign-writer-symbol-notebook-logo-vector.jpg" },
-        { title: "Booking", src: "https://png.pngtree.com/element_our/20190601/ourlarge/pngtree-white-photo-album-icon-image_1344878.jpg" },
-        { title: "ContactUS", src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM94eDkWqJzNiAYzvx1Qc0cEPS_ScfFgCx6g&s" },
-      ];
-    return (
-        <div
-        className={` ${
-          open ? "w-72" : "w-20 "
-        } bg-gradient-to-r from-cyan-500 to-fuchsia-200 h-screen p-5  pt-8 relative duration-300`}
-      >
-        <img
-          src="https://cdn.icon-icons.com/icons2/3404/PNG/512/categories_collapse_icon_215799.png" alt=""
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-neutral-950
-           border-2 rounded-full  ${!open && "rotate-180"}`}
-          onClick={() => setOpen(!open)}
-        />
-        <div className="flex gap-x-4 items-center">
-          <img
-            src="./src/assets/logo.png" alt=""
-            className={`cursor-pointer duration-500 ${
-              open && "rotate-[360deg]"
-            }`}
-          />
-          <h1
-            className={`text-black origin-left font-medium text-xl duration-200 ${
-              !open && "scale-0"
-            }`}
-          >
-            Designer
-          </h1>
-        </div>
-        <ul className="pt-6">
-          {Menus.map((Menu, index) => (
-             <Link to={`/${Menu.title}`}>
-            <li
-              key={index}
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-950 text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                index === 0 && "bg-light-white"
-              } `}
-            >
-              {/* <Link to='/'></Link> */}
-              <img src={Menu.src} alt="" className="w-12" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
-              </span>
-              
-            </li>
-            </Link>
-          ))}
-        </ul>
+import { useState,useEffect } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const Sidebar = () => {
+  const [open, setOpen] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const Menus = ["About Us", "Dashboard", "Booking", "Contact Us"];
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is authenticated by looking for a token in localStorage
+    const token = localStorage.getItem("authToken");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+    setIsAuthenticated(false);
+    navigate('/login');
+  };
+  return (
+    <div className={` ${open ? "w-60" : "w-20"} bg-dark h-100 p-4 pt-5 relative duration-300`}>
+      <button className={`btn btn-secondary btn-sm rounded-circle position-absolute top-2 start-100 translate-middle 
+          ${!open && "rotate-180"}`} onClick={() => setOpen(!open)}></button>
+
+      <div className="text-white text-center mb-4">
+        <h5 className="font-weight-bold">
+          {isAuthenticated ? "User Panel" : "Please Login"}
+        </h5>
       </div>
-    )
-}
+
+      {!isAuthenticated ? (
+        <div className="d-flex flex-column">
+           <button onClick={() => navigate('/login')} className="btn btn-primary mb-3">
+            Login/Signup
+          </button>
+          <button onClick={() => navigate('/loginadmin')} className="btn btn-primary mb-3">
+            Login as Admin
+          </button>
+        </div>
+      ) : (
+        <ul className="list-unstyled">
+          {Menus.map((menu, index) => (
+            <li key={index} className="mb-3">
+              <Link
+                to={`/${menu.replace(" ", "")}`}
+                className="btn btn-outline-light btn-block text-left"
+              >
+                {menu}
+              </Link>
+
+            </li>
+            
+          ))}
+          <li>
+              <button onClick={handleLogout} className="btn btn-outline-danger btn-block text-left">
+              Logout
+            </button>
+            </li>
+        </ul>
+      )}
+    </div>
+  );
+};
+
 export default Sidebar;
