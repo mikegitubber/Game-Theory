@@ -55,4 +55,18 @@ const Book = async(req,res)=>{
       res.status(500).json({ error: "Error booking the slot" });
     }
 }
-module.exports = { View ,Book,Booked};
+
+const Dash=  async (req, res) => {
+    const username = decodeURIComponent(req.query.username);
+    console.log("Received decoded username:", username);
+    try {
+        const userBookings = await Booking.find({ username: username });
+        console.log(userBookings)
+        res.status(200).json(userBookings);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching bookings", error });
+    }
+
+};
+
+module.exports = { View ,Book,Booked,Dash};

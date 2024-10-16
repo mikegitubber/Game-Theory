@@ -9,6 +9,7 @@ import UserContext from './Constants/UserContext';
 import { useContext, useState } from 'react';
 import Loginform from './components/Loginform';
 import Signupform from './components/Signupform';
+import Loginadmin from './components/LoginAdmin';
 const App=()=> {
   const [place,setPlace]=useState();
   const [game,setGame]=useState();
@@ -36,7 +37,11 @@ export const appRouter = createBrowserRouter([
           {
             path: "/login",
             element : <Loginform/>
-        },
+         },
+         {
+          path: "/loginadmin",
+          element : <Loginadmin/>
+       },
         {
           path: "/signup",
           element : <Signupform/>

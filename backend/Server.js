@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json())
 app.use("/api",Booking_router)
 app.use('/api',require('./Routes/Createuser'))
+app.use('/api',require('./Routes/adminroute'))
 // app.use('/api',require('./Routes/DisplayData'))
 // app.use('/api',require('./Routes/OrderData'))
 // app.use('/api',require('./Routes/DefaultOrderdata'))
