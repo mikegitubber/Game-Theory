@@ -1,0 +1,25 @@
+{
+  "name": "game_theory",
+  "version": "1.0.0",
+  "description": "Build a booking app for a sports technology company's operations team ",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sreeram1004/Game-Theory.git"
+  },
+  "keywords": [
+    "ReactJS",
+    "MongoDB",
+    "ExpressJS",
+    "NodeJS"
+  ],
+  "author": "IIT2021066-Sreeram Angina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sreeram1004/Game-Theory/issues"
+  },
+  "homepage": "https://github.com/Sreeram1004/Game-Theory#readme"
+}
