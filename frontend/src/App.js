@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import { createBrowserRouter,Outlet} from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import Dashboard from './components/Dashboard';
+import AboutUS from './components/AboutUs';
+import ContactUs from './components/ContactUs';
+import Booking from './components/Booking';
+const App=()=> {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    <div className="m-0 p-0 flex ">
+      <div className="sticky top-0 h-screen">
+    <Sidebar />
+    </div>
+     <Outlet/>
     </div>
   );
 }
+export const appRouter = createBrowserRouter([
+  {
+      path : "/",
+      element : <App/>,
+      children: [
+          {
+              path: "/Dashboard",
+              element : <Dashboard/>
+          },
+          {
+            path: "/AboutUS",
+            element : <AboutUS/>
+          }, 
+          {
+            path: "/ContactUs",
+            element : <ContactUs/>
+          },
+          {
+            path: "/Booking",
+            element : <Booking/>
+          },  
+      ]
+  },
+  
 
+])
 export default App;
