@@ -2,45 +2,44 @@ import React from 'react'
 import './Signupform.css'
 import { Link, useNavigate,} from 'react-router-dom'
 import { useState } from 'react'
+import axios from 'axios';
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 </style>
 export default function Loginform() {
     let navigate= useNavigate(); 
     const [Credentials, setCredentials] = useState({  email: "", password: "" })
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await fetch("https://localhost:5000/api/LoginUser", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              
-              email: Credentials.email,
-              password: Credentials.password
-            })
-          });
-      
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-      
-          const json = await response.json();
-          if (!json.success) {
-            alert("Something went wrong");
-          }
-          if (json.success) {
-            localStorage.setItem("userEmail",Credentials.email)
-            localStorage.setItem("authToken",json.authToken);
-            navigate('/')
-          }
+            const response = await axios.post("http://localhost:5000/api/LoginUser", { // Use HTTP if not configured for HTTPS
+                email: Credentials.email,
+                password: Credentials.password
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            const json = response.data; // Access data directly
+            if (!json.success) {
+                alert("Something went wrong");
+            }
+            if (json.success) {
+                localStorage.setItem("userEmail", Credentials.email);
+                localStorage.setItem("authToken", json.authToken);
+                navigate('/Booking');
+                window.location.reload();
+                
+            }
         } catch (error) {
-          console.error('Error:', error);
-          alert("An error occurred. Please try again.");
+            console.error('Error:', error);
+            alert("An error occurred. Please try again.");
         }
-      };
+    };
+    
     
     const onChange = (event) => {
         setCredentials({ ...Credentials, [event.target.name]: event.target.value })

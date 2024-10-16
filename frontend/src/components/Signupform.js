@@ -3,7 +3,7 @@ import './Signupform.css'
 import { Link} from 'react-router-dom'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import axios from 'axios'
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 </style>
@@ -12,45 +12,37 @@ export default function Signupform() {
     const navigate=useNavigate();
     
     
-    const [Credentials, setCredentials] = useState({ name: "", email: "", apartmentName: "", blockNumber: "", floorNumber: "", roomNumber: "", contactNumber: "", password: "" })
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          const response = await fetch("https://localhost:5000/api/CreateUser", {
-            method: 'POST',
+    const [Credentials, setCredentials] = useState({ name: "", email: "", contactNumber: "", password: "" })
+
+
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await axios.post("http://localhost:5000/api/CreateUser", {
+            name: Credentials.name,
+            email: Credentials.email,
+            contactNumber: Credentials.contactNumber,
+            password: Credentials.password
+        }, {
             headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              name: Credentials.name,
-              email: Credentials.email,
-             
-              contactNumber: Credentials.contactNumber,
-              password: Credentials.password
-            })
-          }
-          );
-           
-          console.log(response);
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-      
-          const json = await response.json();
-          
-          if (!json.success) {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const json = response.data;
+        console.log(json);
+        if (!json.success) {
             alert("Something went wrong");
-          }
-          if (json.success) {
-            navigate('/login');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          alert("An error occurred. Please try again.");
         }
-      
-        
-      };
+        if (json.success) {
+            navigate('/login');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert("An error occurred. Please try again.");
+    }
+};
+
     
     const onChange = (event) => {
         setCredentials({ ...Credentials, [event.target.name]: event.target.value })

@@ -49,7 +49,7 @@ const Sidebar = () => {
             <li key={index} className="mb-3">
               <Link
                 to={`/${menu.replace(" ", "")}`}
-                className="btn btn-outline-light btn-block text-left"
+                className="btn btn-primary mb-3"
               >
                 {menu}
               </Link>
@@ -58,7 +58,7 @@ const Sidebar = () => {
             
           ))}
           <li>
-              <button onClick={handleLogout} className="btn btn-outline-danger btn-block text-left">
+              <button onClick={handleLogout} className="btn btn-primary mb-3">
               Logout
             </button>
             </li>
