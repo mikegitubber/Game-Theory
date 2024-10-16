@@ -49,18 +49,22 @@ const Slider = () => {
   const timeslots = ["4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM"];
     const {center,sport}=useContext(UserContext);
   
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/View?center=${center}&sport=${sport}`)
-      .then((res) => {
-        const { courts, bookings } = res.data;
-        setCourts(Array.from({ length: courts }, (_, i) => i + 1)); 
-        setBookings(bookings); 
-      })
-      .catch((err) => {
-        console.error("Error fetching court data:", err);
-      });
-  }, [selectedSport, center]);
+    useEffect(() => {
+      // Ensure this effect runs when selectedSport or center changes
+      if (selectedSport && center) {
+        axios
+          .get(`http://localhost:5000/api/View?center=${center}&sport=${selectedSport}`)
+          .then((res) => {
+            const { courts, bookings } = res.data; // Make sure your API sends this structure
+            setCourts(Array.from({ length: courts }, (_, i) => i + 1)); 
+            setBookings(bookings); 
+          })
+          .catch((err) => {
+            console.error("Error fetching court data:", err);
+          });
+      }
+    }, [selectedSport, center]);
+    
 
   const handleBooking = (court, time) => {
     const bookingData = {
