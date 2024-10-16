@@ -5,7 +5,6 @@ import UserContext from "../../Constants/UserContext";
 const BookingSchedule = ({ bookings, courts, timeslots, handleBooking }) => {
   return (
     <div className="grid grid-cols-7 gap-4 p-4 bg-gray-100">
-      {/* Render the court names as columns */}
       <div className="col-span-1"></div> {/* Empty space for times */}
       {courts.map((court, idx) => (
         <div key={idx} className="font-semibold text-center">
@@ -13,15 +12,13 @@ const BookingSchedule = ({ bookings, courts, timeslots, handleBooking }) => {
         </div>
       ))}
 
-      {/* Render the time slots and the bookings */}
       {timeslots.map((time, timeIdx) => (
         <div key={timeIdx} className="col-span-7 grid grid-cols-7 gap-4">
-          {/* Render the time on the first column */}
           <div className="font-semibold">{time}</div>
 
-          {/* Render booking data for each court */}
           {courts.map((court, courtIdx) => (
             <div key={courtIdx} className="text-center">
+              {/* Check if the slot is booked */}
               <button
                 className={`w-full h-10 ${
                   bookings[court] && bookings[court][time]
@@ -32,8 +29,8 @@ const BookingSchedule = ({ bookings, courts, timeslots, handleBooking }) => {
                 disabled={bookings[court] && bookings[court][time]}
               >
                 {bookings[court] && bookings[court][time]
-                  ? bookings[court][time] // Show who booked if it's taken
-                  : "Available"} {/* Show "Available" if not booked */}
+                  ? `Booked by: ${bookings[court][time].username}`  // Display booked user's name
+                  : "Available"}
               </button>
             </div>
           ))}
@@ -43,18 +40,20 @@ const BookingSchedule = ({ bookings, courts, timeslots, handleBooking }) => {
   );
 };
 
-const Slider = () => {
-  const [date, setDate] = useState(new Date());
+
+const Slider = ({selectedDate}) => {
+  const [date, setDate] = useState(selectedDate);
+  // console.log(selectedDate)
   const [sports, setSports] = useState([]); 
   const [courts, setCourts] = useState([]);
-  const [bookings, setBookings] = useState({});
+  const [bookings, setBookings] = useState({});  // This will now hold booked user data
   const timeslots = ["4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM"];
-  const {center,sport,setGame}=useContext(UserContext);
+  const { center, sport, setGame } = useContext(UserContext);
+
   useEffect(() => {
     axios
       .get(`http://localhost:5000/api/View?center=${center}`)
       .then((res) => {
-        console.log(res);
         const centerSports = res.data[0].sports;
         setSports(centerSports);
         fetchCourtsAndBookings(sport);
@@ -71,35 +70,62 @@ const Slider = () => {
   }, [sport]);
 
   const fetchCourtsAndBookings = () => {
-        sports.map((game)=>{
-          if(game.sportname===sport) setCourts(Array.from({ length: game.courts }, (_, i) => i + 1)); 
-        })
-        setBookings(bookings); 
-      
-  };
+    sports.map((game) => {
+      if (game.sportname === sport) {
+        setCourts(Array.from({ length: game.courts }, (_, i) => i + 1));
+      }
+    });
 
-  const handleBooking = (court, time) => {
-    const bookingData = {
-      username: "CurrentUser", 
-      center,
-      sport: sport,
-      time: new Date(`${format(date, "yyyy-MM-dd")} ${time}`), 
-      courtNo: court,
-      booked: true,
-    };
-
-    // API call to post booking data
+    // Fetch bookings for the selected sport and center
     axios
-      .post("http://localhost:5000/api/book", bookingData)
+      .get(`http://localhost:5000/api/View?center=${center}`)
       .then((res) => {
-        setBookings((prev) => ({
-          ...prev,
-          [court]: { ...prev[court], [time]: "Booked by You" },
-        }));
+        const bookingsData = res.data.reduce((acc, booking) => {
+          const courtBookings = acc[booking.courtNo] || {};
+          courtBookings[booking.time] = {
+            username: booking.username,
+            booked: true,
+          };
+          acc[booking.courtNo] = courtBookings;
+          return acc;
+        }, {});
+        setBookings(bookingsData);
       })
       .catch((err) => {
-        console.error("Error booking slot:", err);
+        console.error("Error fetching bookings:", err);
       });
+  };
+
+  const handleBooking = async (court, time) => {
+    try {
+      const userProfileResponse = await axios.post("http://localhost:5000/api/userprofile", {
+        email: localStorage.getItem('userEmail'),
+      });
+
+      const userProfileData = userProfileResponse.data;
+      const user = userProfileData.userData.name;
+      console.log(date);
+      const bookingData = {
+        username: user,
+        center,
+        sport: sport,
+        timeSlot: time,
+        Date: date,
+        courtNo: court,
+        booked: true,
+      };
+
+      const bookingResponse = await axios.post("http://localhost:5000/api/Book", bookingData);
+
+      // Update state to reflect booking
+      setBookings((prev) => ({
+        ...prev,
+        [court]: { ...prev[court], [time]: { username: user, booked: true } },
+      }));
+
+    } catch (error) {
+      console.error("Error booking slot or fetching user profile:", error);
+    }
   };
 
   return (
@@ -122,6 +148,7 @@ const Slider = () => {
           ))}
         </select>
       </div>
+
       <BookingSchedule
         bookings={bookings}
         courts={courts}
@@ -133,3 +160,4 @@ const Slider = () => {
 };
 
 export default Slider;
+
