@@ -8,7 +8,7 @@ const Booking = ()=>{
     const navigate=useNavigate();
     const {setPlace,}=useContext(UserContext);
     useEffect(() => {
-        axios.get("http://localhost:5000/api/api/View")
+        axios.get("http://localhost:5000/api/View")
         .then((res)=>{setCenters(res.data)
             // console.log(centers)
         })

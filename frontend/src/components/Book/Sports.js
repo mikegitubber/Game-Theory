@@ -9,9 +9,9 @@ const Sports = () => {
     const {setGame,center}=useContext(UserContext);
     console.log(center)
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/api/View?center=${center}`)
+        axios.get(`http://localhost:5000/api/View?center=${center}`)
         .then((res)=>{
-            console.log(res.data[0].sports)
+            // console.log(res.data[0].sports)
             setSports(res.data[0].sports)
             // console.log(centers)
         })
