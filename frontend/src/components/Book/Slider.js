@@ -54,7 +54,7 @@ const Slider = ({ selectedDate }) => {
   useEffect(() => {
     if (center) {
       axios
-        .get(`http://localhost:5000/api/View?center=${center}`)
+        .get(`${REACT_APP_BACK_URL}/api/View?center=${center}`)
         .then((res) => {
           const centerSports = res.data[0].sports;
           setSports(centerSports);
@@ -89,7 +89,7 @@ const Slider = ({ selectedDate }) => {
     });
 
     axios
-      .get(`http://localhost:5000/api/Booked?center=${center}&sport=${selectedSport}&date=${date}`)
+      .get(`${REACT_APP_BACK_URL}/api/Booked?center=${center}&sport=${selectedSport}&date=${date}`)
       .then((res) => {
         const bookingsData = res.data.reduce((acc, booking) => {
           const courtNo = booking.courtNo;
@@ -121,7 +121,7 @@ const Slider = ({ selectedDate }) => {
   // Handle booking by sending the selected court and time to the backend
   const handleBooking = async (court, time) => {
     try {
-      const userProfileResponse = await axios.post("http://localhost:5000/api/userprofile", {
+      const userProfileResponse = await axios.post(`${BACK_URL}/api/userprofile`, {
         email: localStorage.getItem("userEmail"),
       });
 
@@ -139,7 +139,7 @@ const Slider = ({ selectedDate }) => {
       };
 
       // Send booking data to the backend
-      await axios.post("http://localhost:5000/api/Book", bookingData);
+      await axios.post(`${REACT_APP_BACK_URL}/api/Book`, bookingData);
 
       // Update the state to reflect the new booking
       setBookings((prev) => ({

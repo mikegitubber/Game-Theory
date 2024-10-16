@@ -18,7 +18,7 @@ export default function Signupform() {
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post("http://localhost:5000/api/CreateUser", {
+        const response = await axios.post(`${REACT_APP_BACK_URL}/api/CreateUser`, {
             name: Credentials.name,
             email: Credentials.email,
             contactNumber: Credentials.contactNumber,

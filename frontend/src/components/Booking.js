@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserContext from '../Constants/UserContext';
+
+const REACT_APP_BACK_URL = process.env.BACK_URL;
+
 const Booking = ()=>{
     const [centers,setCenters]=useState([]);
     const navigate=useNavigate();
     const {setPlace,}=useContext(UserContext);
     useEffect(() => {
-        axios.get("http://localhost:5000/api/View")
+        axios.get(`${BACK_URL}/api/View`)
         .then((res)=>{setCenters(res.data)
             // console.log(centers)
         })

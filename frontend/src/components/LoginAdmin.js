@@ -11,7 +11,7 @@ export default function Loginadmin() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5000/api/Loginadmin", {
+            const response = await axios.post(`${REACT_APP_BACK_URL}/api/Loginadmin`, {
                 email: Credentials.email,
                 password: Credentials.password
             }, {

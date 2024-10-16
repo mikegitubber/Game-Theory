@@ -10,7 +10,7 @@ const Dashboard = () => {
         // Fetch user profile to get the username
         const fetchUsername = async () => {
             try {
-                const userProfileResponse = await axios.post("http://localhost:5000/api/userprofile", {
+                const userProfileResponse = await axios.post(`${REACT_APP_BACK_URL}/api/userprofile`, {
                     email: localStorage.getItem('userEmail'),
                 });
                 const userProfileData = userProfileResponse.data;
@@ -28,7 +28,7 @@ const Dashboard = () => {
             try {
                 const username = encodeURIComponent(user);
                 console.log(username)
-                const bookingsResponse = await axios.get(`http://localhost:5000/api/Dash`, {
+                const bookingsResponse = await axios.get(`${REACT_APP_BACK_URL}/api/Dash`, {
                     params: { username }
                 });
                 console.log(bookingsResponse.data)
