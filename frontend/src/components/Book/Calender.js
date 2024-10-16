@@ -71,7 +71,7 @@ const Calender=()=>{
       const firstDayOfNextMonth = add(firstDayOfMonth, { months: 1 });
       setCurrMonth(format(firstDayOfNextMonth, "MMM-yyyy"));
     };
-  if(!view)return(<Slider data={daysInWeek} date={date}/>);
+  if(!view)return(<Slider data={daysInWeek}  selectedDate={date} />);
     return(
       <div className=" bg-white flex  items-center justify-center ml-40 mt-10 w-[800px]">
         <div className={`w-[600px] h-[${(daysInMonth.length-1)*100+50}] mt-4`}>

@@ -75,11 +75,11 @@ router.post("/LoginUser", [
            id:foundUser.id
         }
       }
-      console.log(process.env.jwtsecret)
+      
       const authToken=jwt.sign(data,process.env.jwtsecret)
 
       res.json({ success: true ,authToken:authToken});
-      console.log(res)
+      
     } catch (error) {
       console.log(error);
       res.json({ success: false });
