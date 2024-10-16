@@ -1,14 +1,16 @@
-const { BookingSchema } = require("../Models/BookingSchema");
 const {Center} =require("../Models/Centers")
-const {ConnectDB} =require("../utils/ConnectDb")
 const View = async (req, res) => {
 try{
-    console.log("hello");
-    await ConnectDB.connect();
-    const db = ConnectDB.db(Center); 
-    const Centers = db.collection('Centers');
-    const data=Centers.find({});
-    res.json({data});
+    console.log(req.query)
+    const {center}=req.query
+    console.log(req.query)
+    if(center!=undefined){
+        const data= await Center.find({Name:center});
+    return res.json(data);
+    }
+    const data= await Center.find();
+    // console.log(data);
+    res.json(data);
 }
 catch(err){
     console.error("Error in Media function:", err);

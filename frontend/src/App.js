@@ -3,16 +3,24 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import AboutUS from './components/AboutUs';
 import ContactUs from './components/ContactUs';
+import Calender from './components/Book/Calender'
 import Booking from './components/Booking';
+import Sports from './components/Book/Sports';
+import UserContext from './Constants/UserContext';
+import { useContext, useState } from 'react';
 const App=()=> {
+  const [place,setPlace]=useState();
+  const [game,setGame]=useState();
+  const [uname,setUname]=useState();
   return (
-
+    <UserContext.Provider value={{center : place,setPlace,sport:game,setGame,UserName:uname,setUname}}>
     <div className="m-0 p-0 flex ">
       <div className="sticky top-0 h-screen">
     <Sidebar />
     </div>
      <Outlet/>
     </div>
+    </UserContext.Provider>
   );
 }
 export const appRouter = createBrowserRouter([
@@ -31,6 +39,14 @@ export const appRouter = createBrowserRouter([
           {
             path: "/ContactUs",
             element : <ContactUs/>
+          },
+          {
+            path: "/Booking/Sports",
+            element : <Sports/>
+          },
+          {
+            path: "/Booking/Calender",
+            element : <Calender/>
           },
           {
             path: "/Booking",

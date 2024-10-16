@@ -1,15 +1,48 @@
+import {useState ,useEffect}from 'react';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Sports from './Sports';
+import { Link } from 'react-router-dom';
 const Places = ()=>{
+    const [centers,setCenters]=useState([]);
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/api/View")
+        .then((res)=>{setCenters(res.data)
+            // console.log(centers)
+        })
+        .catch((err)=>{console.log(err)});
+    },[])
     return(
-        <div className="items-center">
-            <div className="flex justify-between p-12 m-12">
-            <button className="m-8 p-6 h-24 w-40 bg-[url('https://assets.telegraphindia.com/telegraph/2023/Nov/1701074133_hyderabad.jpg')] bg-no-repeat bg-cover bg-center">Hyderabad</button>
-            <button className="p-6 m-8  h-24 w-40">Bangalore</button>
-            </div>
-            <div className="flex p-12">
-            <button className="p-6 m-8">Mumbai</button>
-            <button className="p-6 m-8">Delhi</button>
-            </div>
+        <div className="container mt-5">
+        <div className="row justify-content-center">
+            {centers.length > 0 ? (
+                centers.map((center, index) => (
+                    <button 
+                        className={`col-6 col-sm-6 col-md-6 mb-4 ${centers.length % 2 === 1 && centers.length - 1 === index ? 'mx-auto' : ''}`} 
+                        key={index} onClick={()=>{<Link to='/Booking/Sport'/>}}
+                    >
+                        <div
+                            className="card text-white bg-dark"
+                            style={{
+                                height: '300px',
+                                backgroundSize: 'cover',
+                                backgroundImage: `url(${center.image})`, // Set the image as background
+                                backgroundPosition: 'center'
+                            }}
+                        >
+                            <div className="card-body d-flex align-items-end">
+                                <h5 className="card-title bg-dark bg-opacity-75 p-2">
+                                    {center.Name}
+                                </h5>
+                            </div>
+                        </div>
+                    </button>
+                ))
+            ) : (
+                <p>Loading centers...</p>
+            )}
         </div>
+    </div>
     );
 }
 export default Places;

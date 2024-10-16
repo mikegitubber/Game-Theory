@@ -1,8 +1,8 @@
 import { useEffect, useState} from "react";
-import UserContext from "../Constants/UserContext";
+// import UserContext from "../Constants/UserContext";
 import { useContext } from "react";
-// import axios from "axios";
-// import Slider from "./Slider";
+import axios from "axios";
+import Slider from "./Slider";
 // import 'react-calendar/dist/Calendar.css';
 import {
     add,
@@ -17,26 +17,26 @@ import {
     startOfToday,
     startOfWeek,
   } from "date-fns";
-  // import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 const Calender=()=>{
     const [img,setImg]=useState([]);
     const[view,setView]=useState(true);
-    const {UserName}=useContext(UserContext);
+    // const {UserName}=useContext(UserContext);
     const today = startOfToday();
     const[month,setMonth]=useState(format(today, "M"));
     const[year,setYear]=useState(format(today, "y"));
     // const [pres,setPres]=useState({month,year});
-    useEffect(()=>{
-        // console.log(pres)
-        axios.get(`http://localhost:4000/api/diary/Media/?username=${UserName}&month=${month}&year=${year}`)
-        .then((res)=>{
-            console.log(res)
-            setImg(res.data.media)
-            console.log(img)
-        }
-        )
-        .catch(err=>console.log(err))
-    },[])
+    // useEffect(()=>{
+    //     // console.log(pres)
+    //     axios.get(`http://localhost:4000/api/diary/Media/?username=${UserName}&month=${month}&year=${year}`)
+    //     .then((res)=>{
+    //         console.log(res)
+    //         setImg(res.data.media)
+    //         console.log(img)
+    //     }
+    //     )
+    //     .catch(err=>console.log(err))
+    // },[])
     
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const colStartClasses = [
@@ -79,7 +79,7 @@ const Calender=()=>{
             <p className="font-semibold text-xl">
               {format(firstDayOfMonth, "MMMM yyyy")}
             </p>
-            {/* <div className="flex items-center justify-evenly gap-6 sm:gap-12">
+            <div className="flex items-center justify-evenly gap-6 sm:gap-12">
               <ChevronLeftIcon
                 className="w-6 h-6 cursor-pointer"
                 onClick={getPrevMonth}
@@ -88,7 +88,7 @@ const Calender=()=>{
                 className="w-6 h-6 cursor-pointer"
                 onClick={getNextMonth}
               />
-            </div> */}
+            </div>
           </div>
           <hr className="my-6" />
           <div className="grid grid-cols-7 gap-6 sm:gap-12 place-items-center">

@@ -5,17 +5,24 @@ const CenterSchema =new mongoose.Schema({
         type:String,
         require:true,
     },
-    sport:
-    {
+
+    sport:[
+    {   
         sportname:{
             type:String,
             require:true
         },
         courts:{
+            type:Number,
+            require:true
+        },
+        sportimage:{
             type:String,
             require:true
         }
+    
     },
+    ],
     image: 
         {
             type:String,

@@ -12,7 +12,7 @@ const Sidebar =()=>{
         <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-gradient-to-r from-cyan-500 to-fuchsia-200 h-full p-5  pt-8 relative duration-300`}
+        } bg-gradient-to-r from-cyan-500 to-fuchsia-200 h-screen p-5  pt-8 relative duration-300`}
       >
         <img
           src="https://cdn.icon-icons.com/icons2/3404/PNG/512/categories_collapse_icon_215799.png" alt=""
