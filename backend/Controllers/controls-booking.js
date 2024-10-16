@@ -19,19 +19,26 @@ catch(err){
 }
 };
 const Booked = async (req,res)=>{
-    const { center } = req.query;
-  try {
-    const bookings = await Booking.find({ center }).sort({ time: 1 });
-    return res.status(200).json(bookings);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Error fetching bookings" });
-  }
+    const { center, sport, date } = req.query; // Capture the center and sport from the request query
+
+    try {
+      // Fetch all bookings for the selected center and sport
+      const bookings = await Booking.find({ center, sport,date }).sort({ time: 1 });
+        
+      return res.status(200).json(bookings); // Send the bookings data in the response
+    } catch (error) {
+    //   console.error(error);
+      return res.status(500).json({ error: "Error fetching bookings" });
+    }
 }
 const Book = async(req,res)=>{
     const { username, center, sport, timeSlot,Date, courtNo, booked } = req.body;
+    // const existingBooking = await Booking.findOne({ courtNo, timeSlot, Date });
+
+    // if (existingBooking) {
+    //   res.status(400).json({ error: "This slot is already booked." });
+    // }
     try {
-      // Create a new booking document
       const newBooking = new Booking({
         username,
         center,

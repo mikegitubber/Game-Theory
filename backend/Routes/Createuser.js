@@ -89,9 +89,7 @@ router.post("/LoginUser", [
 
   router.post('/userprofile', async (req, res) => {
     try {
-       console.log(req)
         let eId = await user.findOne({ 'email': req.body.email })
-        console.log(eId)
         res.json({userData:eId})
     } catch (error) {
         res.send("Error",error.message)

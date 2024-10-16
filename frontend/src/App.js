@@ -1,8 +1,7 @@
 import { createBrowserRouter,Outlet} from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
-import AboutUS from './components/AboutUs';
-import ContactUs from './components/ContactUs';
+
 import Calender from './components/Book/Calender'
 import Booking from './components/Booking';
 import Sports from './components/Book/Sports';
@@ -42,14 +41,6 @@ export const appRouter = createBrowserRouter([
           path: "/signup",
           element : <Signupform/>
         },
-          {
-            path: "/AboutUS",
-            element : <AboutUS/>
-          }, 
-          {
-            path: "/ContactUs",
-            element : <ContactUs/>
-          },
           {
             path: "/Booking/Sports",
             element : <Sports/>
